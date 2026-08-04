@@ -1,0 +1,10 @@
+
+EDA Summary — Elliptic Dataset
+================================
+Total nodes: 203769
+Total edges: 234355
+Labeled nodes: 46564
+Illicit (train): 3462 / 29894
+Illicit (test): 1083 / 16670
+Average node degree: 2.30
+Max node degree: 473
