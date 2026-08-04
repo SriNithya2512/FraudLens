@@ -1,0 +1,12 @@
+{
+  "model": "GATv2",
+  "loss": "CrossEntropy",
+  "train_precision": 0.9199207696661007,
+  "train_recall": 0.939052570768342,
+  "train_f1": 0.9293882218410521,
+  "train_auprc": 0.972066597117295,
+  "test_precision": 0.6771004942339374,
+  "test_recall": 0.37950138504155123,
+  "test_f1": 0.4863905325443787,
+  "test_auprc": 0.4687985089485636
+}
