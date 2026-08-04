@@ -1,0 +1,12 @@
+{
+  "model": "ChebNet",
+  "loss": "CrossEntropy",
+  "train_precision": 0.9594383775351014,
+  "train_recall": 0.8882149046793761,
+  "train_f1": 0.9224538773061347,
+  "train_auprc": 0.9744590311191101,
+  "test_precision": 0.9144736842105263,
+  "test_recall": 0.3850415512465374,
+  "test_f1": 0.5419103313840156,
+  "test_auprc": 0.6451401482449427
+}
