@@ -1,0 +1,12 @@
+{
+  "model": "ChebNet",
+  "loss": "WCE",
+  "train_precision": 0.8020316560359083,
+  "train_recall": 0.9806470248411323,
+  "train_f1": 0.8823911630929174,
+  "train_auprc": 0.9810656232776256,
+  "test_precision": 0.4344262295081967,
+  "test_recall": 0.6851338873499538,
+  "test_f1": 0.5317090648513078,
+  "test_auprc": 0.589440921623853
+}
