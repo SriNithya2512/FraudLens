@@ -1,0 +1,12 @@
+{
+  "model": "Ensemble (ChebNet+GATv2+XGBoost, tuned)",
+  "params": {
+    "learning_rate": 0.05,
+    "max_depth": 4,
+    "n_estimators": 100
+  },
+  "test_precision": 0.6477157360406092,
+  "test_recall": 0.5891043397968606,
+  "test_f1": 0.6170212765957447,
+  "test_auprc": 0.6300847193016
+}
