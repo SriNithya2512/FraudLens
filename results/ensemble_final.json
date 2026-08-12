@@ -1,12 +1,7 @@
 {
-  "model": "Ensemble (ChebNet+GATv2 embeddings + raw features + XGBoost, tuned)",
-  "params": {
-    "learning_rate": 0.05,
-    "max_depth": 4,
-    "n_estimators": 100
-  },
-  "test_precision": 0.589,
-  "test_recall": 0.6722,
-  "test_f1": 0.6279,
-  "test_auprc": 0.713
+  "model": "Ensemble (final, recall-prioritized via scale_pos_weight x2)",
+  "test_precision": 0.7178714859437751,
+  "test_recall": 0.6602031394275162,
+  "test_f1": 0.6878306878306878,
+  "test_auprc": 0.7005814238534751
 }
