@@ -1,0 +1,8 @@
+Model,Loss,Precision,Recall,F1,AUPRC
+ChebNet,Cross-Entropy,0.9145,0.385,0.5419,0.6451
+ChebNet,Focal Loss,0.7625,0.4506,0.5665,0.567
+ChebNet,Weighted CE,0.4344,0.6851,0.5317,0.5894
+GATv2,Cross-Entropy,0.6771,0.3795,0.4864,0.4688
+GATv2,Focal Loss,0.4632,0.337,0.3902,0.3996
+GATv2,Weighted CE,0.288,0.7184,0.4112,0.3903
+Ensemble (final),"ChebNet+Focal/GATv2+CE + raw features + confidence, XGBoost tuned",0.7179,0.6602,0.6878,0.7006

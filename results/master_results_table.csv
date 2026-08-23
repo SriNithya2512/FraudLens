@@ -1,0 +1,10 @@
+Source File,Model,Loss/Config,Precision,Recall,F1,AUPRC
+ensemble_final.json,"Ensemble (final, recall-prioritized via scale_pos_weight x2)",-,0.7179,0.6602,0.6878,0.7006
+ensemble_BACKUP_raw_features.json,"Ensemble (ChebNet+GATv2 embeddings + raw features + XGBoost, tuned)","{'learning_rate': 0.05, 'max_depth': 4, 'n_estimators': 100}",0.589,0.6722,0.6279,0.713
+ensemble_xgboost.json,"Ensemble (ChebNet+GATv2+XGBoost, tuned)","{'learning_rate': 0.05, 'max_depth': 4, 'n_estimators': 100}",0.6477,0.5891,0.617,0.6301
+chebnet_focal.json,ChebNet,Focal,0.7625,0.4506,0.5665,0.567
+chebnet_ce_baseline.json,ChebNet,CrossEntropy,0.9145,0.385,0.5419,0.6451
+chebnet_wce.json,ChebNet,WCE,0.4344,0.6851,0.5317,0.5894
+gatv2_ce_baseline.json,GATv2,CrossEntropy,0.6771,0.3795,0.4864,0.4688
+gatv2_wce.json,GATv2,WCE,0.288,0.7184,0.4112,0.3903
+gatv2_focal.json,GATv2,Focal,0.4632,0.337,0.3902,0.3996
