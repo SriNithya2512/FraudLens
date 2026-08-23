@@ -1,0 +1,16 @@
+feature,mean_abs_shap
+gatv2_confidence,2.6263726
+chebnet_confidence,1.4194249
+raw_feat_5,0.2633375
+gatv2_emb_9,0.13840473
+chebnet_emb_18,0.1334245
+raw_feat_58,0.12283305
+raw_feat_161,0.09812345
+raw_feat_16,0.08044227
+chebnet_emb_47,0.08033604
+gatv2_emb_49,0.047564823
+raw_feat_2,0.046541356
+raw_feat_65,0.046420846
+raw_feat_53,0.042871296
+raw_feat_52,0.038382176
+gatv2_emb_67,0.036746606
