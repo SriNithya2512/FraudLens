@@ -4,16 +4,18 @@ import xgboost as xgb
 import shap
 import json
 import matplotlib.pyplot as plt
+import pandas as pd
 
 st.set_page_config(page_title="FraudLens", layout="centered")
 st.title("🔍 FraudLens: Illicit Transaction Detector")
 st.write("An explainable ensemble GNN framework for detecting illicit cryptocurrency transactions.")
 
-st.info(
-    "⚠️ **Important note:** This demo works on transactions from our evaluation dataset "
-    "(the Elliptic Bitcoin dataset), since our models need each transaction's position in the "
-    "known transaction graph to make predictions. This is a common limitation of this type of "
-    "graph model — extending it to brand-new, real-time transactions is noted as future work."
+st.warning(
+    "⚠️ **Limitation:** This model only works on transactions already present in our trained "
+    "transaction graph — it cannot yet score a brand-new, real-world transaction it has never seen. "
+    "This is a known constraint of this type of graph model (called 'transductive' learning). "
+    "Extending this to unseen transactions in real time would require an inductive architecture "
+    "(e.g. GraphSAGE) — noted as future work in our paper."
 )
 
 @st.cache_resource
@@ -29,7 +31,6 @@ def load_everything():
 
 model, X_test, y_test, feature_names, explainer = load_everything()
 
-# --- Better selection: curated examples, not raw index ---
 st.subheader("Select a transaction to analyze")
 
 illicit_indices = np.where(y_test == 1)[0][:5]
@@ -44,6 +45,24 @@ for i in licit_indices:
 choice = st.selectbox("Pick an example transaction:", list(example_options.keys()))
 idx = example_options[choice]
 
+# --- Show the actual raw numbers for this transaction ---
+with st.expander("🔢 See the actual data for this transaction"):
+    sample_raw = X_test[idx]
+    raw_feat_indices = [i for i, name in enumerate(feature_names) if "raw_feat" in name]
+    raw_feat_names = [feature_names[i] for i in raw_feat_indices][:15]  # first 15 for readability
+    raw_feat_values = [sample_raw[i] for i in raw_feat_indices][:15]
+
+    display_df = pd.DataFrame({
+        "Feature": raw_feat_names,
+        "Value": [round(v, 4) for v in raw_feat_values]
+    })
+    st.write("First 15 raw transaction features (of 165 total):")
+    st.dataframe(display_df, use_container_width=True)
+    st.caption(
+        "Note: Elliptic dataset features are anonymized numeric values (not labeled with real-world "
+        "names like 'amount' or 'fee') to protect transaction privacy — this is standard for this dataset."
+    )
+
 if st.button("Analyze Transaction"):
     sample = X_test[idx].reshape(1, -1)
     prob = model.predict_proba(sample)[0][1]
@@ -55,40 +74,39 @@ if st.button("Analyze Transaction"):
     st.write(f"**Ground truth label:** {actual}")
 
     st.subheader("Why did the model decide this?")
-
     shap_values = explainer.shap_values(sample)
 
-    # --- Plain-English summary, generated from SHAP values ---
     contributions = list(zip(feature_names, shap_values[0]))
     contributions.sort(key=lambda x: abs(x[1]), reverse=True)
-    top_3 = contributions[:3]
+    top_5 = contributions[:5]
 
     def plain_name(fname):
         if "confidence" in fname:
             model_name = "ChebNet" if "chebnet" in fname else "GATv2"
-            return f"the {model_name} model's own confidence score"
+            return f"{model_name}'s own confidence score"
         elif "raw_feat" in fname:
-            return f"a raw transaction property (feature #{fname.split('_')[-1]})"
+            return f"raw transaction feature #{fname.split('_')[-1]}"
         elif "emb" in fname:
             model_name = "ChebNet" if "chebnet" in fname else "GATv2"
-            return f"a learned pattern from the {model_name} graph model"
+            return f"a learned graph pattern from {model_name}"
         return fname
 
-    st.write("**In simple terms:**")
-    explanation_lines = []
-    for fname, val in top_3:
-        direction = "pushed toward ILLICIT" if val > 0 else "pushed toward LICIT"
-        strength = "strongly" if abs(val) > 1 else "moderately" if abs(val) > 0.3 else "slightly"
-        explanation_lines.append(f"- {plain_name(fname)} {strength} {direction} (impact: {val:+.2f})")
-
-    for line in explanation_lines:
-        st.write(line)
+    st.write("**In simple terms, ranked by influence:**")
+    table_rows = []
+    for fname, val in top_5:
+        direction = "→ ILLICIT" if val > 0 else "→ LICIT"
+        table_rows.append({
+            "Factor": plain_name(fname),
+            "Raw feature name": fname,
+            "Impact score": round(val, 3),
+            "Direction": direction
+        })
+    st.dataframe(pd.DataFrame(table_rows), use_container_width=True)
 
     st.write("")
-    st.write("**Detailed breakdown (SHAP waterfall chart):**")
+    st.write("**Full detailed chart (SHAP waterfall):**")
     st.caption(
-        "Each bar shows one factor's push toward ILLICIT (red, pointing right) or LICIT (blue, pointing left). "
-        "Longer bars = stronger influence on this specific decision."
+        "Red bars push toward ILLICIT, blue bars push toward LICIT. Longer bar = stronger influence."
     )
 
     fig, ax = plt.subplots()
